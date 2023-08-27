@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, TextInput } from 'react-native';
 
-function Input({placeholder}) {
+function Input({placeholder, secureTextEntry}) {
     const [text, onChangeText] = React.useState('');
 
   return (
@@ -9,6 +9,7 @@ function Input({placeholder}) {
     onChangeText={onChangeText}
     value={text}
     placeholder={placeholder}
+    secureTextEntry={secureTextEntry}
     placeholderTextColor="#BDBDBD"
     style={styles.input}
     />

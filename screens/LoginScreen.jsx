@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import Title from "../components/Title";
 import Input from "../components/Input";
@@ -6,6 +6,7 @@ import FormField from "../components/FormField";
 import SubmitButton from "../components/SubmitButton";
 
 function LoginScreen() {
+  // const [password, setpassword] = useState("")
   return (
     <ImageBackground
     source={require("../assets/images/backgroung.png")}
@@ -16,7 +17,7 @@ function LoginScreen() {
       <Title>Увійти</Title>
       <FormField>
         <Input placeholder="Адреса електронної пошти" />
-        <Input placeholder="Пароль" />
+        <Input placeholder="Пароль" keyboardType="password" secureTextEntry={true} />
         <Text
         style={{
           position: "absolute",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../components/Input";
 import { ImageBackground, StyleSheet, Text, View} from "react-native";
 import SVGAdd from "../assets/images/add.svg";
@@ -7,6 +7,7 @@ import FormField from "../components/FormField";
 import SubmitButton from "../components/SubmitButton";
 
 function RegistrationScreen() {
+  // const [password, setpassword] = useState("")
   return (
     <ImageBackground
     source={require("../assets/images/backgroung.png")}
@@ -27,7 +28,7 @@ function RegistrationScreen() {
       <FormField>
         <Input placeholder="Логін" />
         <Input placeholder="Адреса електронної пошти" />
-        <Input placeholder="Пароль" />
+          <Input placeholder="Пароль" keyboardType="password" secureTextEntry={true}/>
         <Text
         style={{
           position: "absolute",
