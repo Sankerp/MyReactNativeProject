@@ -1,57 +1,149 @@
 import React, { useState } from "react";
 import Input from "../components/Input";
-import { ImageBackground, StyleSheet, Text, View} from "react-native";
+import {
+  Alert,
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import SVGAdd from "../assets/images/add.svg";
 import Title from "../components/Title";
 import FormField from "../components/FormField";
 import SubmitButton from "../components/SubmitButton";
 
 function RegistrationScreen() {
-  // const [password, setpassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("");
+  const [isLoginFocused, setIsLoginFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  
+  const handleLoginFocus = () => {
+    setIsLoginFocused(!isLoginFocused);
+  };
+  
+  const handleEmailFocus = () => {
+    setIsEmailFocused(!isEmailFocused);
+  };
+  
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(!isPasswordFocused);
+  };
+  
+  const handlePressIn = () => {
+    setPasswordVisibility(false);
+  };
+
+  const handlePressOut = () => {
+    setPasswordVisibility(true);
+  };
+
+  const signUp = () => {
+        if (!login || !email || !password) {
+    return Alert.alert("All fields must be filled");
+    }
+    Alert.alert("You register as", `${login}, E-mail: ${email}, Password: ${password}`);
+    console.warn("You are sign up!");
+
+    resetForm();
+  };
+    function resetForm() {
+    setLogin("");
+    setEmail("");
+    setPassword("");
+  }
+
   return (
-    <ImageBackground
-    source={require("../assets/images/backgroung.png")}
-    resizeMode="cover"
-    style={styles.imageBackground}
-  >
-    <View style={styles.registrationScreen}>
-      <View style={styles.userImage}>
-        <SVGAdd
-          width={25}
-          height={25}
-          style={{ position: "absolute", right: -12, bottom: 14 }}
-        />
-      </View>
-      <Title style={{ fontFamily: "Roboto-Medium", fontSize: 30 }}>
-        Реєстрація
-      </Title>
-      <FormField>
-        <Input placeholder="Логін" />
-        <Input placeholder="Адреса електронної пошти" />
-          <Input placeholder="Пароль" keyboardType="password" secureTextEntry={true}/>
-        <Text
-        style={{
-          position: "absolute",
-          color: "#1B4371",
-          top: 148,
-          right: 16,
-          fontFamily: "Roboto-Regular",
-          fontSize: 16,
-        }}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={-180}
+        style={{ flex: 1 }}
       >
-        Показати
-      </Text>
-      </FormField>
-      <SubmitButton>
-        <Text style={{ color: "#fff", fontFamily: "Roboto-Regular", fontSize: 16 }}>
-          Зареєстуватися
-        </Text>
-      </SubmitButton>
-      <Text style={{ color: "#1B4371", fontFamily: "Roboto-Regular", fontSize: 16 }}>
-        Вже є акаунт? Увійти
-      </Text>
-    </View>
-    </ImageBackground>
+        <ImageBackground
+          source={require("../assets/images/backgroung.png")}
+          resizeMode="cover"
+          style={styles.imageBackground}
+        >
+          <View style={styles.registrationScreen}>
+            <View style={styles.userImage}>
+              <SVGAdd
+                width={25}
+                height={25}
+                style={{ position: "absolute", right: -12, bottom: 14 }}
+              />
+            </View>
+            <Title style={{ fontFamily: "Roboto-Medium", fontSize: 30 }}>
+              Реєстрація
+            </Title>
+            <FormField>
+              <Input
+                placeholder="Логін"
+                value={login}
+                setter={setLogin}
+                isFocused={isLoginFocused}
+                handleFocus={handleLoginFocus}
+              />
+              <Input
+                placeholder="Адреса електронної пошти"
+                keyboardType="email-address"
+                value={email}
+                setter={setEmail}
+                isFocused={isEmailFocused}
+                handleFocus={handleEmailFocus}
+              />
+              <View style={{ position: "relative" }}>
+                <Input
+                  placeholder="Пароль"
+                  secureTextEntry={passwordVisibility}
+                  value={password}
+                  setter={setPassword}
+                  isFocused={isPasswordFocused}
+                  handleFocus={handlePasswordFocus}
+                />
+                <Pressable
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  style={{ position: "absolute", top: 16, right: 16 }}
+                >
+                  <Text
+                    style={{
+                      color: "#1B4371",
+                      fontFamily: "Roboto-Regular",
+                      fontSize: 16,
+                    }}
+                  >
+                    Показати
+                  </Text>
+                </Pressable>
+              </View>
+            </FormField>
+            <SubmitButton submit={signUp}>
+              <Text
+                style={{ color: "#fff", fontFamily: "Roboto-Regular", fontSize: 16 }}
+              >
+                Зареєстуватися
+              </Text>
+            </SubmitButton>
+            <Text
+              style={{ color: "#1B4371", fontFamily: "Roboto-Regular", fontSize: 16 }}
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
+            >
+              Вже є акаунт? Увійти
+            </Text>
+          </View>
+        </ImageBackground>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 

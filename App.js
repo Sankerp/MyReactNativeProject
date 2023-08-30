@@ -3,11 +3,13 @@ import { useFonts } from 'expo-font';
 import { StyleSheet, View } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
+import PostsScreen from "./screens/PostsScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
     'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
+    'RobotoBold': require('./assets/fonts/Roboto-Bold.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -16,17 +18,16 @@ export default function App() {
   
   return (
     <View style={styles.container}>
-      <RegistrationScreen/>
       <StatusBar style="auto" />
-    </View>
+{/* <LoginScreen/> */}
+        <RegistrationScreen/>
+        <PostsScreen/>
+         </View>
   );
 }
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "flex-end",
   },
 });
