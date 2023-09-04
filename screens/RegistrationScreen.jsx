@@ -1,181 +1,70 @@
-import React, { useState } from "react";
-import Input from "../components/Input";
 import {
-  Alert,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
-  Pressable,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import SVGAdd from "../assets/images/add.svg";
-import Title from "../components/Title";
-import FormField from "../components/FormField";
-import SubmitButton from "../components/SubmitButton";
+import RegistrationFormFormik from "../components/RegistrationFormFormik";
+import PhotoUser from "../components/PhotoUser";
 
-function RegistrationScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [login, setLogin] = useState("");
-  const [isLoginFocused, setIsLoginFocused] = useState(false);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
-  
-  const handleLoginFocus = () => {
-    setIsLoginFocused(!isLoginFocused);
-  };
-  
-  const handleEmailFocus = () => {
-    setIsEmailFocused(!isEmailFocused);
-  };
-  
-  const handlePasswordFocus = () => {
-    setIsPasswordFocused(!isPasswordFocused);
-  };
-  
-  const handlePressIn = () => {
-    setPasswordVisibility(false);
-  };
-
-  const handlePressOut = () => {
-    setPasswordVisibility(true);
-  };
-
-  const signUp = () => {
-        if (!login || !email || !password) {
-    return Alert.alert("All fields must be filled");
-    }
-    Alert.alert("You register as", `${login}, E-mail: ${email}, Password: ${password}`);
-    console.warn("You are sign up!");
-
-    resetForm();
-  };
-    function resetForm() {
-    setLogin("");
-    setEmail("");
-    setPassword("");
-  }
-
+export default function RegistrationScreen({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-180}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
+        keyboardVerticalOffset={-170}
       >
-        <ImageBackground
-          source={require("../assets/images/backgroung.png")}
-          resizeMode="cover"
-          style={styles.imageBackground}
-        >
-          <View style={styles.registrationScreen}>
-            <View style={styles.userImage}>
-              <SVGAdd
-                width={25}
-                height={25}
-                style={{ position: "absolute", right: -12, bottom: 14 }}
-              />
+        <View style={styles.container}>
+          <ImageBackground
+            source={require("../assets/images/backgroung.png")}
+            resizeMode="cover"
+            style={styles.image}
+          >
+            <View style={styles.registerContainer}>
+              <PhotoUser />
+              <Text style={styles.title}>Реєстрація</Text>
+              <RegistrationFormFormik navigation={navigation} />
             </View>
-            <Title style={{ fontFamily: "Roboto-Medium", fontSize: 30 }}>
-              Реєстрація
-            </Title>
-            <FormField>
-              <Input
-                placeholder="Логін"
-                value={login}
-                setter={setLogin}
-                isFocused={isLoginFocused}
-                handleFocus={handleLoginFocus}
-              />
-              <Input
-                placeholder="Адреса електронної пошти"
-                keyboardType="email-address"
-                value={email}
-                setter={setEmail}
-                isFocused={isEmailFocused}
-                handleFocus={handleEmailFocus}
-              />
-              <View style={{ position: "relative" }}>
-                <Input
-                  placeholder="Пароль"
-                  secureTextEntry={passwordVisibility}
-                  value={password}
-                  setter={setPassword}
-                  isFocused={isPasswordFocused}
-                  handleFocus={handlePasswordFocus}
-                />
-                <Pressable
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                  style={{ position: "absolute", top: 16, right: 16 }}
-                >
-                  <Text
-                    style={{
-                      color: "#1B4371",
-                      fontFamily: "Roboto-Regular",
-                      fontSize: 16,
-                    }}
-                  >
-                    Показати
-                  </Text>
-                </Pressable>
-              </View>
-            </FormField>
-            <SubmitButton submit={signUp}>
-              <Text
-                style={{ color: "#fff", fontFamily: "Roboto-Regular", fontSize: 16 }}
-              >
-                Зареєстуватися
-              </Text>
-            </SubmitButton>
-            <Text
-              style={{ color: "#1B4371", fontFamily: "Roboto-Regular", fontSize: 16 }}
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}
-            >
-              Вже є акаунт? Увійти
-            </Text>
-          </View>
-        </ImageBackground>
+          </ImageBackground>
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
 
-export const styles = StyleSheet.create({
-  imageBackground: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    width: "100%",
+    alignItems: "center",
     justifyContent: "flex-end",
-    alignItems: "center",
   },
-  registrationScreen: {
+  registerContainer: {
     flex: 1,
-    justifyContent: "flex-start",
-    backgroundColor: "white",
     alignItems: "center",
+    justifyContent: "flex-start",
     maxHeight: 549,
     width: "100%",
-    paddingTop: 92,
-    paddingHorizontal: 16,
-    paddingBottom: 78,
+    backgroundColor: "#fff",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    position: "relative",
+    paddingTop: 92,
   },
-  userImage: {
-    width: 120,
-    height: 120,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-    position: "absolute",
-    top: -60,
+  image: {
+    flex: 1,
+    justifyContent: "flex-end",
+    width: "100%",
+    alignItems: "center",
+  },
+  title: {
+    color: "#212121",
+    textAlign: "center",
+    fontFamily: "Roboto-Medium",
+    fontStyle: "normal",
+    fontSize: 30,
+    marginBottom: 33,
   },
 });
-
-export default RegistrationScreen;

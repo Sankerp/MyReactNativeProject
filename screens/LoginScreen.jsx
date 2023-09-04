@@ -1,150 +1,67 @@
-import React, { useState } from "react";
 import {
-  Alert,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
-  Pressable,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import Title from "../components/Title";
-import Input from "../components/Input";
-import FormField from "../components/FormField";
-import SubmitButton from "../components/SubmitButton";
+import LoginFormFormik from "../components/LoginFormFormik";
 
-function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
-  
-  const handleEmailFocus = () => {
-    setIsEmailFocused(!isEmailFocused);
-  };
-  
-  const handlePasswordFocus = () => {
-    setIsPasswordFocused(!isPasswordFocused);
-  };
-  
-  const handlePressIn = () => {
-    setPasswordVisibility(false);
-  };
-
-  const handlePressOut = () => {
-    setPasswordVisibility(true);
-  };
-
-  const signIn = () => {
-    if (!email || !password) {
-    return Alert.alert("All fields must be filled");
-    }
-    Alert.alert("You entered", `${email}, ${password}`);
-    console.warn("You are logged in!");
-
-    resetForm();
-  };
-    function resetForm() {
-    setEmail("");
-    setPassword("");
-    }
-  
+export default LoginScreen = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-245}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
+        keyboardVerticalOffset={-236}
       >
-        <ImageBackground
-          source={require("../assets/images/backgroung.png")}
-          resizeMode="cover"
-          style={styles.imageBackground}
-        >
-          <View style={styles.loginScreen}>
-            <Title>Увійти</Title>
-            <FormField>
-              <Input
-                placeholder="Адреса електронної пошти"
-                keyboardType="email-address"
-                value={email}
-                setter={setEmail}
-                isFocused={isEmailFocused}
-                handleFocus={handleEmailFocus}
-              />
-              <View style={{ position: "relative" }}>
-                <Input
-                  placeholder="Пароль"
-                  secureTextEntry={passwordVisibility}
-                  value={password}
-                  setter={setPassword}
-                  isFocused={isPasswordFocused}
-                  handleFocus={handlePasswordFocus}
-                />
-                <Pressable
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                  style={{ position: "absolute", top: 16, right: 16 }}
-                >
-                  <Text
-                    style={{
-                      color: "#1B4371",
-                      fontFamily: "Roboto-Regular",
-                      fontSize: 16,
-                    }}
-                  >
-                    Показати
-                  </Text>
-                </Pressable>
-              </View>
-            </FormField>
-            <SubmitButton submit={signIn}>
-              <Text
-                style={{ color: "#fff", fontFamily: "Roboto-Regular", fontSize: 16 }}
-              >
-                Увійти
-              </Text>
-            </SubmitButton>
-            <Text
-              style={{ color: "#1B4371", fontFamily: "Roboto-Regular", fontSize: 16 }}
-            >
-              Немає акаунту?{" "}
-              <Text style={{ textDecorationLine: "underline" }}>
-                Зареєструватися
-              </Text>
-            </Text>
-          </View>
-        </ImageBackground>
+        <View style={styles.container}>
+          <ImageBackground
+            source={require("../assets/images/backgroung.png")}
+            resizeMode="cover"
+            style={styles.image}
+          >
+            <View style={styles.loginContainer}>
+              <Text style={styles.title}>Увійти</Text>
+              <LoginFormFormik navigation={navigation} />
+            </View>
+          </ImageBackground>
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
-}
+};
 
-export const styles = StyleSheet.create({
-  imageBackground: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center",
   },
-  loginScreen: {
+  loginContainer: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: "flex-start",
     alignItems: "center",
+    justifyContent: "flex-start",
     maxHeight: 489,
     width: "100%",
-    paddingTop: 32,
-    paddingHorizontal: 16,
-    paddingBottom: 144,
+    backgroundColor: "#fff",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    position: "relative",
+    paddingTop: 32,
+  },
+  title: {
+    color: "#212121",
+    textAlign: "center",
+    fontFamily: "Roboto-Medium",
+    fontStyle: "normal",
+    fontSize: 30,
+    fontStyle: "normal",
+    marginBottom: 33,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "flex-end",
+    width: "100%",
+    alignItems: "center",
   },
 });
-
-export default LoginScreen;

@@ -1,33 +1,67 @@
-import { StatusBar } from "expo-status-bar";
-import { useFonts } from 'expo-font';
-import { StyleSheet, View } from "react-native";
-import LoginScreen from "./screens/LoginScreen";
+import 'react-native-gesture-handler';
 import RegistrationScreen from "./screens/RegistrationScreen";
-import PostsScreen from "./screens/PostsScreen";
+import LoginScreen from "./screens/LoginScreen";
+import { useFonts } from 'expo-font';
+import {
+  NavigationContainer,
+} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from "./screens/HomeScreen";
+import CommentsScreen from "./screens/CommentsScreen";
+import IconHeader from "./components/IconHeader";
+import MapScreen from "./screens/MapScreen";
 
-export default function App() {
+const MainStack = createStackNavigator();
+
+export default function App({ route }) {
+
   const [fontsLoaded] = useFonts({
     'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
     'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
-    'RobotoBold': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
   });
 
   if (!fontsLoaded) {
     return null;
   }
-  
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-{/* <LoginScreen/> */}
-        <RegistrationScreen/>
-        <PostsScreen/>
-         </View>
+    <NavigationContainer>
+      <MainStack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
+        <MainStack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+          options={{ headerShown: false }}
+        />
+        <MainStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <MainStack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <MainStack.Screen
+          name="Коментарі"
+          component={CommentsScreen}
+          options={{
+            headerLeft: () => <IconHeader routeName={"Коментарі"} />,
+          }}
+        />
+        <MainStack.Screen
+          name="Мапа"
+          component={MapScreen}
+          options={{
+            headerLeft: () => <IconHeader routeName={"Мапа"} />,
+          }}
+        />
+      </MainStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
